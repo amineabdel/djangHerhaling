@@ -4,86 +4,26 @@ import os
 import re
 import requests
 import json
-
-from oefening.models import PersonForm
-from oefening.models import Person
+import random
 
 
 def index(request):
-    return HttpResponse("weed")
-
-
-def test(request, number):
-    return HttpResponse("You're looking at question %s." % number)
-
-
-def apike(request):
-
-    namen = Person.objects.all().last()
-    print(namen)
-    url = 'http://api.icndb.com/jokes/random'
-    urlNames = '?firstName='+namen.voornaam + '&lastName=' + namen.achternaam
-
-    r = requests.get(url + urlNames)
-    data = r.json()
-
-    form = PersonForm()
-    if request.method == 'POST':
-        form = PersonForm(request.POST)
-        if form.is_valid():
-            saved = form.save(commit=True)
-            form.cleaned_data
-            obj = Person.objects.all().last()
-            qcontext = {
-                'naam': obj,
-                # 'savedForm': PersonForm(instance=saved)
-            }
-            return render(request, 'oefening/jokeApi.html', qcontext)
-
-    context = {
-        'id': data['value']['id'],
-        'joke': data['value']['joke'],
-        'form': form
-    }
-
-    return render(request, 'oefening/jokeApi.html', context)
-
-
-def song(request):
-    file = 'oefening/txtfile/song.txt'
-
+    file = 'oefening/txtfile/numbers.txt'
     with open(file) as f:
-        context = {'songs': f}
-        return render(request, 'oefening/songs.html', context)
+        context = {'nr': f}
+        return render(request, 'oefening/nrkes.html', context)
+
+def nummerkes(request,line1,line2):
+     return HttpResponse("line1 = %s" % line1)
 
 
-def movies(request):
-    module_dir = os.path.dirname(__file__)
-    file_path = os.path.join(module_dir, 'txtfile/movies.txt')
-    data_file = open(file_path, 'r')
-    # data = data_file.read()
-    context = {'movies': data_file}
-    return render(request, 'oefening/movies.html', context)
+# def index(request):
+#     return HttpResponse("hallo")
 
-    """
-    f = open(file, 'r')
-    file_content = f.readLines()
-    f.close()
-    """
 
-    """
- with open(file) as f:
-        a = f.readlines()
-        f.seek(0)
-        b = f.readline()
-        context = {'songs': a}
+# def test(request, number):
+#     return HttpResponse("You're looking at question %s." % number)
 
-    """
 
-    """
-     with open(file) as f:
-        fl = f.readlines()
-        for x in fl:
-            context = {'songs': x}
-            return render(request, 'oefening/songs.html', context)
-    """
+
+
